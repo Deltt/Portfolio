@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Michael Eden - Portfolio</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+	<script src="scripts.js" defer></script>
+	<link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="bg-black text-gray-100">
+	<!-- Navbar -->
+	<header class="bg-neutral-900 shadow-md sticky top-0 z-50">
+		<div class="max-w-6xl mx-auto px-6 flex justify-between items-center py-4">
+			<h1 class="text-2xl font-bold text-white">Michael Eden ~ Portfolio</h1>
+			<nav>
+				<ul class="flex space-x-6 text-gray-400">
+					<li><a href="#about" class="hover:text-white transition">About</a></li>
+					<li><a href="#projects" class="hover:text-white transition">Projects</a></li>
+					<li><a href="#contact" class="hover:text-white transition">Contact</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<!-- Hero Section -->
+	<section id="hero"
+		class="relative h-screen flex flex-col justify-center items-center text-center bg-black overflow-hidden">
+		<!-- Particle Canvas -->
+		<canvas id="hero-canvas" class="absolute inset-0 w-full h-full z-0"></canvas>
+
+		<!-- Hero Content -->
+		<h2 class="hero-title fade-in text-5xl md:text-7xl font-extrabold mb-4 text-white relative z-10">
+			<span class="hi">Hi,</span> <span class="rest text-gray-300">I’m Michael Eden</span>
+		</h2>
+		<p class="fade-in text-lg md:text-2xl max-w-xl mb-6 text-gray-400 relative z-10">
+			A passionate developer of interactive media.
+		</p>
+		<a href="#projects"
+			class="fade-in px-8 py-4 bg-neutral-800 text-white rounded-lg shadow-lg hover:bg-neutral-700 transition relative z-10">
+			Check out my stuff
+		</a>
+	</section>
+
+	<!-- About Section -->
+	<section id="about" class="max-w-5xl mx-auto px-6 py-20">
+		<h3 class="fade-in text-4xl font-bold mb-6 text-white">About Me</h3>
+		<p class="fade-in text-lg leading-relaxed text-gray-300">
+			I’m a developer passionate about clean design and efficient code. I create modern, user-friendly websites
+			and web apps with a focus on aesthetics, performance, and responsiveness.
+		</p>
+	</section>
+
+	<!-- Projects Section -->
+	<section id="projects" class="bg-neutral-950 py-20">
+		<div class="max-w-6xl mx-auto px-6">
+			<h3 class="fade-in text-4xl font-bold mb-12 text-white">Projects</h3>
+
+			<div x-data="{
+				originalProjects: [
+					{ 
+						id: 1, 
+						title: 'Procedural Web Terrain', 
+						desc: 'A browser-targeted, infinite terrain mesh generator.', 
+						img: 'img/terrain.gif', 
+						link: '#',
+						detailText1: 'This project showcases advanced WebGL/WebGPU techniques for generating infinite, procedural terrain directly in the browser. Using a combination of Simplex noise algorithms and compute shaders, the terrain generates seamlessly as users explore, maintaining consistent performance (1024+ CUDA cores GPU required).',
+						detailText2: 'The implementation features dynamic chunk loading, high quality normals via octo-finite-differences calculations, and customizable chunk properties (such as size, density, etc). All data is managed within fixed memory, so no runtime allocation or freeing is neccessary. Note that the execution of this program requires WebGPU support from the Browser. Current Chrome and Edge versions should work reliably.',
+						detailText3: 'Several performance optimization methods are used in this project, for example octahdral encoding of mesh data to reduce GPU bandwith cost, multithreaded chunk generation/re-construction and fixed buffers.',
+						detailImg: 'img/terrain_chunks.gif'
+					},
+					{ 
+						id: 2, 
+						title: 'Compact Oven Display', 
+						desc: 'A highly stylized approach for an oven-stovetop-combination display UI.', 
+						img: 'img/oven_display_compact.png', 
+						link: '#',
+						detailText1: 'This all-in-one UI menu provides full, easy and fast control to the user over the desired heat of a digitally controlled oven or the stoves. Designed with touch controlls in mind (mouse cursor just for demonstration).',
+						detailText2: '',
+						detailImg: 'img/oven_display.gif'
+					},
+					{ 
+						id: 3, 
+						title: 'Planet Generator', 
+						desc: 'A realtime 3D-Planet-Mesh generator.', 
+						img: 'img/planet_shaper.gif', 
+						link: '#',
+						detailText1: 'This tool allows the creation of highly customizable planet meshes using noise. Unlike many naive implementations of this concept, this tool uses a normalized octahedron as a base, providing more equally spaced vertices around the spheres surfaces, especially the pole areas. This avoids drastic differences in mesh density.',
+						detailText2: 'The vertice offsets are generated using multiple layers of Simplex-Noise values which are calculated inside a compute shader for realtime efficiency. These are used as masks and vertex height (or more accurately, the distance to the center).',
+						detailText3: '',
+						detailImg: 'img/normalized_octrahedron.png'
+					},
+					{ 
+						id: 4, 
+						title: 'Todo-Today', 
+						desc: 'A simple Todo-App with minor gamification elements.', 
+						img: 'img/todo_today.png', 
+						link: '#',
+						detailText1: 'The app offers the user to add small, to-do like tasks to a list. These tasks are meant to be things that the user intents to do some time in the future, aka have no urgency or deadline.',
+						detailText2: 'Whenever the user finds themselves with some spare time, they can draw a random task from all the previously entered tasks, taking away the burden of having to chose what to do. In addition to that, there is also a chance of drawing a golden letter, basically a free-pass.',
+						detailText3: 'These free passes are intended as a random, small reward for trying to work on their task list.',
+						detailImg: 'img/jumping_letter.gif'
+					},
+					{ 
+						id: 5, 
+						title: 'Hewi', 
+						desc: 'A management tool for a midwifes.', 
+						img: 'img/hewi.png', 
+						link: '#',
+						detailText1: 'This app was created as a community project in collaboration with the Niels-Stensen-Kliniks midwifes as an efficient, easy-to-use tool to manage tasks, appointsments and patients.',
+						detailText2: '',
+						detailText3: '',
+						detailImg: 'img/hewi-menu.png'
+					},
+					{ 
+						id: 6, 
+						title: 'Environment Art', 
+						desc: 'Virtual environment for use in video games.', 
+						img: 'img/env1.png', 
+						link: '#',
+						detailText1: 'Collection of selfmade assets and shaders, put together to form a forst-environment during a cloudy night under a full moon.',
+						detailText2: '',
+						detailText3: '',
+						detailImg: 'img/env3.png'
+					}
+				],
+				projects: [],
+				expanded: null,
+				expandedProject: null,
+				clickedCardElement: null,
+				init() {
+					this.projects = [...this.originalProjects];
+				},
+				expandCard(id, cardElement) {
+					this.expanded = id;
+					this.expandedProject = this.originalProjects.find(p => p.id === id);
+					this.clickedCardElement = cardElement;
+					this.$nextTick(() => {
+						const expandedCard = document.getElementById('expanded-card');
+						const offset = 100; // Adjust this value to control how much space above the card
+						const elementPosition = expandedCard.offsetTop;
+						const offsetPosition = elementPosition - offset;
+						window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+					});
+				},
+				collapseCard() {
+					this.expanded = null;
+					this.expandedProject = null;
+					this.$nextTick(() => {
+						if (this.clickedCardElement) {
+							const offset = 100; // Same offset as your navigation
+							const elementPosition = this.clickedCardElement.getBoundingClientRect().top + window.scrollY;
+							const offsetPosition = elementPosition - offset;
+							window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+						}
+					});
+				}
+			}">
+
+				<!-- Regular project cards grid -->
+				<div class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+					<template x-for="project in projects" :key="project.id">
+						<div class="fade-in bg-neutral-900 rounded-xl shadow-lg p-6 hover:shadow-2xl cursor-pointer transition-all duration-500"
+							:class="{ 'ring-2 ring-white': expanded === project.id }"
+							@click="expanded === project.id ? collapseCard() : expandCard(project.id, $el)">
+
+							<img :src="project.img" class="w-full object-cover rounded-lg mb-4 max-h-96" />
+							<br>
+							<h4 class="text-2xl font-semibold mb-3 text-white" x-text="project.title"></h4>
+							<p class="text-gray-400 mb-4" x-text="project.desc"></p>
+							<br>
+
+							<!-- <div class="text-center">
+								<span class="text-gray-300 text-sm"
+									x-text="expanded === project.id ? 'Click to close' : 'Click to expand'"></span>
+							</div> -->
+						</div>
+					</template>
+				</div>
+
+				<!-- Expanded card section -->
+				<div x-show="expanded !== null" id="expanded-card" class="mt-16">
+					<div class="fade-in bg-neutral-800 rounded-xl shadow-lg p-8 cursor-pointer" @click="collapseCard()">
+						<template x-if="expandedProject">
+							<div>
+								<h4 class="text-3xl font-semibold mb-4 text-white" x-text="expandedProject.title"></h4>
+								<img :src="expandedProject.img" class="w-full object-cover rounded-lg mb-6 max-h-96" />
+								<p class="text-gray-400 mb-6 text-lg" x-text="expandedProject.desc"></p>
+
+								<div class="expanded-content">
+									<p class="text-gray-300 mb-4 leading-relaxed" x-text="expandedProject.detailText1">
+									</p>
+									<br>
+									<img :src="expandedProject.detailImg"
+										class="w-3/4 mx-auto object-cover rounded-lg mb-4" />
+									<br>
+									<p class="text-gray-300 mb-4 leading-relaxed" x-text="expandedProject.detailText2">
+									</p>
+									<p class="text-gray-300 mb-4 leading-relaxed" x-text="expandedProject.detailText3">
+									</p>
+									<br>
+									<div class="flex gap-3 justify-center" @click.stop>
+										<a href="#"
+											class="bg-white text-black px-6 py-3 rounded-lg transition-colors duration-200 hover:bg-gray-200">
+											View Project
+										</a>
+										<a href="#"
+											class="bg-neutral-800 hover:bg-neutral-700 text-white px-6 py-3 rounded-lg transition-colors duration-200">
+											Source Code
+										</a>
+										<button @click="collapseCard()"
+											class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-colors duration-200">
+											Close
+										</button>
+									</div>
+								</div>
+							</div>
+						</template>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+	<!-- Contact Section -->
+	<section id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
+		<h3 class="fade-in text-4xl font-bold mb-6 text-white">Contact</h3>
+		<p class="fade-in text-lg text-gray-300 mb-6">
+			Feel free to reach out to me for collaborations or just to say hello!
+		</p>
+		<a href="mailto:michael.eden@hs-osnabrueck.de"
+			class="fade-in px-8 py-4 bg-neutral-800 text-white rounded-lg shadow-lg hover:bg-neutral-700 transition">
+			Say Hi
+		</a>
+	</section>
+
+	<!-- Footer -->
+	<footer class="bg-black border-t border-neutral-800 py-8">
+		<div class="max-w-6xl mx-auto px-6 text-center text-gray-500">
+			© 2025 Michael Eden. All rights reserved.
+		</div>
+	</footer>
+</body>
+
+</html>
