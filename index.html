@@ -87,7 +87,7 @@
 			<div class="carousel-container mb-12" x-data="{ images: [1,2,3,4,5], current: 0 }">
 				<div
 					class="relative w-full h-[500px] overflow-hidden rounded-lg shadow-2xl shadow-black/70 select-none">
-					<img :src="`gallery/dungeon${images[current]}.png`"
+					<img :src="`gallery/dungeon${images[current]}.jpg`"
 						class="w-full h-full object-cover transition duration-500" alt="Gallery Image">
 
 					<div @click="current = (current - 1 + images.length) % images.length"
@@ -125,7 +125,7 @@
 			<div class="carousel-container mb-12" x-data="{ images: [1,2,3], current: 0 }">
 				<div
 					class="relative w-full h-[500px] overflow-hidden rounded-lg shadow-2xl shadow-black/70 select-none">
-					<img :src="`gallery/env${images[current]}.png`"
+					<img :src="`gallery/env${images[current]}.jpg`"
 						class="w-full h-full object-cover transition duration-500" alt="Gallery Image">
 
 					<div @click="current = (current - 1 + images.length) % images.length"

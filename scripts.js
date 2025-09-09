@@ -4,7 +4,7 @@ const projects = [
 		title: "Procedural Terrain in Browsers",
 		description: "Another project showing my skills.",
 		link: "#",
-		preview_img: "img/terrain.png",
+		preview_img: "img/terrain.jpg",
 		preview_vid: "vid/terrain.mp4",
 		content: [
 			{ type: "p", text: "A deeper explanation of Project One." },
@@ -15,18 +15,17 @@ const projects = [
 		title: "Planet Generator",
 		description: "An interesting web app I built.",
 		link: "#",
-		preview_img: "img/planet.png",
+		preview_img: "img/planet.jpg",
 		preview_vid: "vid/planet.mp4",
 		content: [
 			{ type: "p", text: "A deeper explanation of Project One." },
-			{ type: "video", src: "vid/planet2.mp4", controls: false },
 		]
 	},
 	{
 		title: "Oven Control Display",
 		description: "An interesting app I built.",
 		link: "#",
-		preview_img: "img/oven.png",
+		preview_img: "img/oven.jpg",
 		content: [
 			{ type: "p", text: "A deeper explanation of Project One." },
 		]
@@ -35,11 +34,10 @@ const projects = [
 		title: "PSX Horror Game",
 		description: "An interesting app I built.",
 		link: "#",
-		preview_img: "img/horror.png",
+		preview_img: "img/horror.jpg",
 		content: [
 			{ type: "p", text: "A deeper explanation of Project One." },
 			{ type: "video", src: "vid/horror.mp4", controls: false },
-			{ type: "video", src: "vid/horror2.mp4", controls: false },
 		]
 	},
 ];
