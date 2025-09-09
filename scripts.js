@@ -61,9 +61,8 @@ projects.forEach(project => {
 
 	card.addEventListener("click", () => {
 		lastClickedCard = card;
-		expandedCard.className = "bg-neutral-900 rounded-lg shadow-lg p-8 cursor-pointer transition-transform"; // no hover:scale-105
+		expandedCard.className = "bg-neutral-900 rounded-lg shadow-lg p-8 cursor-pointer transition-transform";
 
-		// Render flexible content
 		let additionalContent = "";
 		if (project.content && project.content.length > 0) {
 			additionalContent = project.content.map(item => {
@@ -73,27 +72,34 @@ projects.forEach(project => {
 					case "img":
 						return `<img src="${item.src}" alt="${item.alt || ''}" class="rounded-lg w-full mb-4">`;
 					case "video":
-						return `<video src="${item.src}" autoplay muted loop class="w-full mb-4 rounded-lg"></video>`;
+						return `<video data-src="${item.src}" autoplay muted loop class="w-full mb-4 rounded-lg"></video>`;
 					default:
-						return ""; // ignore unknown types
+						return "";
 				}
 			}).join("");
 		}
 
-		// Show preview_vid if available, otherwise preview_img
 		const previewElement = project.preview_vid
-			? `<video src="${project.preview_vid}" autoplay muted loop class="w-full h-96 object-cover mb-6 rounded-lg"></video>`
+			? `<video data-src="${project.preview_vid}" autoplay muted loop class="w-full h-96 object-cover mb-6 rounded-lg"></video>`
 			: `<img src="${project.preview_img}" alt="${project.title} preview" class="rounded-lg w-full h-96 object-cover mb-6">`;
 
 		expandedCard.innerHTML = `
-			${previewElement}
-			<div class="flex flex-col">
-				<h2 class="text-3xl font-bold mb-4 text-white">${project.title}</h2>
-				<p class="text-gray-400 mb-6">${project.description}</p>
-				${additionalContent}
-				<a href="${project.link}" class="text-blue-500 hover:underline">View Project</a>
-			</div>
-		`;
+		${previewElement}
+		<div class="flex flex-col">
+			<h2 class="text-3xl font-bold mb-4 text-white">${project.title}</h2>
+			<p class="text-gray-400 mb-6">${project.description}</p>
+			${additionalContent}
+			<a href="${project.link}" class="text-blue-500 hover:underline">View Project</a>
+		</div>
+	`;
+
+		// Lazy-load videos
+		expandedCard.querySelectorAll('video').forEach(video => {
+			if (!video.src) {
+				video.src = video.dataset.src;
+				video.load();
+			}
+		});
 
 		expandedSection.classList.remove("hidden");
 		window.scrollTo({ top: expandedSection.offsetTop, behavior: "smooth" });
