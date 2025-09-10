@@ -75,9 +75,9 @@ projects.forEach(project => {
 					case "p":
 						return `<p class="text-gray-300 mb-4">${item.text}</p>`;
 					case "img":
-						return `<img src="${item.src}" alt="${item.alt || ''}" class="rounded-lg w-full mb-4">`;
+						return `<img src="${item.src}" alt="${item.alt || ''}" class="rounded-lg w-full h-96 object-cover mb-6">`;
 					case "video":
-						return `<video data-src="${item.src}" autoplay muted loop class="w-full mb-4 rounded-lg"></video>`;
+						return `<video data-src="${item.src}" autoplay muted loop class="rounded-lg w-full h-96 object-cover mb-6"></video>`;
 					default:
 						return "";
 				}
@@ -85,7 +85,7 @@ projects.forEach(project => {
 		}
 
 		const previewElement = project.preview_vid
-			? `<video data-src="${project.preview_vid}" autoplay muted loop class="w-full h-96 object-cover mb-6 rounded-lg"></video>`
+			? `<video data-src="${project.preview_vid}" autoplay muted loop class="rounded-lg w-full h-96 object-cover mb-6"></video>`
 			: `<img src="${project.preview_img}" alt="${project.title} preview" class="rounded-lg w-full h-96 object-cover mb-6">`;
 
 		expandedCard.innerHTML = `
