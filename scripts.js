@@ -134,7 +134,6 @@ const observer = new IntersectionObserver((entries) => {
 		}
 	});
 }, { threshold: 0.1 });
-
 document.querySelectorAll(".fade-in").forEach(el => observer.observe(el));
 
 // Smooth scroll with offset
@@ -150,9 +149,17 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 
 // Hero particles
 const canvas = document.getElementById("hero-canvas");
-const ctx = canvas.getContext("2d");
+const canvasContext = canvas.getContext("2d");
 let particles = [];
-const mouse = { x: null, y: null, radius: 40 }; // trigger radius
+let bright = true
+let isVisible = true;
+
+const canvasObserver = new IntersectionObserver((entries) => {
+	entries.forEach(entry => {
+		isVisible = entry.isIntersecting;
+	});
+}, { threshold: 0.1 });
+canvasObserver.observe(canvas);
 
 function resizeCanvas() {
 	canvas.width = canvas.offsetWidth;
@@ -161,152 +168,145 @@ function resizeCanvas() {
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
-// utility: generate dark purple or rare bright orange
 function randomColor() {
-	if (Math.random() < 0.1) return "#ffd38e"; // 5% chance bright orange
-	const white = 8 + Math.floor(Math.random() * 22);
+	if (Math.random() < 0.2) return "#ffd38e";
+	const white = 10 + Math.floor(Math.random() * 26);
 	return `rgb(${white},${white},${white})`;
 }
 
-// simple easing function for bounce effect
+function nextColor() {
+	if (bright) {
+		bright = false
+		return "#ffd38e";
+	}
+	const white = 8 + Math.floor(Math.random() * 22);
+	bright = true
+	return `rgb(${white},${white},${white})`;
+}
+
+// easing method (taken from godot source code: https://github.com/godotengine/godot/blob/master/scene/animation/easing_equations.h )
 function easeOutBounce(t) {
-	const n1 = 7.5625;
-	const d1 = 2.75;
-	if (t < 1 / d1) {
-		return n1 * t * t;
-	} else if (t < 2 / d1) {
-		t -= 1.5 / d1;
-		return n1 * t * t + 0.75;
-	} else if (t < 2.5 / d1) {
-		t -= 2.25 / d1;
-		return n1 * t * t + 0.9375;
+	const overshoot = 1.2;
+	const peakTime = 0.7;
+
+	if (t < peakTime) {
+		const t1 = t / peakTime;
+		return overshoot * (1 - Math.pow(1 - t1, 3));
 	} else {
-		t -= 2.625 / d1;
-		return n1 * t * t + 0.984375;
+		const t2 = (t - peakTime) / (1 - peakTime);
+		const smooth = t2 * t2 * (3 - 2 * t2);
+		return overshoot - (overshoot - 1) * smooth;
 	}
 }
 
 class Snowflake {
-	constructor() {
+	constructor(id) {
+		this.id = id;
 		this.reset();
 	}
 	reset() {
 		this.x = Math.random() * canvas.width;
 		this.y = Math.random() * -canvas.height;
 		this.size = Math.random() * 3 + 2;
+		this.triggerHeight = 50 + Math.random() * (canvas.height - 140)
 		this.originalSize = this.size;
 		this.targetSize = this.size;
-		this.speedY = Math.random() * 1 + 0.5;
+		this.speedY = Math.random() * 1 + 1.5;
 		this.speedX = (Math.random() - 0.5) * 0.5;
 		this.alpha = Math.random() * 0.5 + 0.5;
+		//this.color = "#ffd38e";
 		this.color = randomColor();
 		this.glow = 6;
 		this.isFrozen = false;
-		this.growthProgress = 0; // for initial bounce growth
-		this.oscillationOffset = Math.random() * Math.PI * 2; // random start phase
+		this.growthProgress = 0;
+		this.oscillationOffset = Math.random() * Math.PI * 2;
 	}
 	update() {
 		if (!this.isFrozen) {
 			this.x += this.speedX;
 			this.y += this.speedY;
 
-			if (mouse.x !== null && mouse.y !== null) {
-				const dx = this.x - mouse.x;
-				const dy = this.y - mouse.y;
-				const dist = Math.sqrt(dx * dx + dy * dy);
-				if (dist < mouse.radius) {
-					this.isFrozen = true;
-					//this.color = randomColor();
-					this.glow = 15;
-					this.targetSize = 50 + Math.floor(Math.random() * 80);
-					this.growthProgress = 0;
+			if (this.y >= this.triggerHeight) {
+				//this.color = nextColor();
+				this.isFrozen = true;
+				this.glow = 15;
+				this.targetSize = 50 + Math.floor(Math.random() * 80);
+				this.growthProgress = 0;
+				if (this.color === "#ffd38e") {
+					this.targetSize = 40 + Math.floor(Math.random() * 60);
 				}
+
+				window.dispatchEvent(new CustomEvent("particleFrozen"));
 			}
 		} else {
-			// animate size growth with bounce easing
 			if (this.growthProgress < 1) {
-				this.growthProgress += 0.02;
+				this.growthProgress += 0.01;
 				const eased = easeOutBounce(this.growthProgress);
 				this.size = this.originalSize + (this.targetSize - this.originalSize) * eased;
 			} else {
-				// minor oscillation for frozen particles
-				const oscillation = Math.sin(Date.now() * 0.003 + this.oscillationOffset) * 2.8; 
-				this.size = this.targetSize + oscillation; 
-			}
-		}
-
-		// reset if out of canvas (keep frozen state)
-		if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) {
-			const frozen = this.isFrozen;
-			const oldColor = this.color;
-			const oldGlow = this.glow;
-			const oldSize = this.size;
-			const oldOriginalSize = this.originalSize;
-			const oldTargetSize = this.targetSize;
-			const oldProgress = this.growthProgress;
-			this.reset();
-			this.y = -this.size;
-			if (frozen) {
-				this.isFrozen = true;
-				this.color = oldColor;
-				this.glow = oldGlow;
-				this.size = oldSize;
-				this.originalSize = oldOriginalSize;
-				this.targetSize = oldTargetSize;
-				this.growthProgress = oldProgress;
+				const oscillation = Math.sin(Date.now() * 0.003 + this.oscillationOffset) * 2.8;
+				this.size = this.targetSize + oscillation;
 			}
 		}
 	}
 	draw() {
-		ctx.fillStyle = this.color;
-		ctx.shadowColor = this.color;
-		ctx.shadowBlur = this.glow;
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-		ctx.fill();
+		canvasContext.fillStyle = this.color;
+		canvasContext.shadowColor = this.color;
+		canvasContext.shadowBlur = this.glow;
+		canvasContext.beginPath();
+		canvasContext.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+		canvasContext.fill();
 	}
 }
 
-// initialize particles
-const snowflakeCount = 40;
+const snowflakeCount = 30;
 for (let i = 0; i < snowflakeCount; i++) {
-	particles.push(new Snowflake());
+	particles.push(new Snowflake(i));
 }
 
 function animate() {
-	ctx.fillStyle = "black";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	particles.forEach(p => {
-		p.update();
-		p.draw();
-	});
+	if (isVisible) {
+		canvasContext.fillStyle = "black";
+		canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+		particles.forEach(p => {
+			p.update();
+			p.draw();
+		});
+	}
 
 	requestAnimationFrame(animate);
 }
 animate();
 
-// mouse tracking
-document.getElementById("hero").addEventListener("mousemove", (e) => {
-	const rect = canvas.getBoundingClientRect();
-	mouse.x = e.clientX - rect.left;
-	mouse.y = e.clientY - rect.top;
-});
-document.getElementById("hero").addEventListener("mouseleave", () => {
-	mouse.x = null;
-	mouse.y = null;
-});
+// Alpine.js data
+function heroProgress() {
+	return {
+		total: snowflakeCount,
+		progress: 0,
+		completed: false,
+		init() {
+			window.addEventListener("particleFrozen", () => {
+				if (this.progress < this.total) {
+					this.progress++;
+				}
+				if (this.progress >= this.total) {
+					this.completed = true;
+				}
+			});
+		}
+	}
+}
 
-// Fixed scroll bar (save)
-window.addEventListener('beforeunload', () => {
-	sessionStorage.setItem('scrollPos', window.scrollY);
-});
+// // Fixed scroll bar (save)
+// window.addEventListener('beforeunload', () => {
+// 	sessionStorage.setItem('scrollPos', window.scrollY);
+// });
 
-// Fixed scroll bar (restore)
-window.addEventListener('load', () => {
-	const scrollPos = sessionStorage.getItem('scrollPos');
-	if (scrollPos) window.scrollTo(0, parseInt(scrollPos));
-});
+// // Fixed scroll bar (restore)
+// window.addEventListener('load', () => {
+// 	const scrollPos = sessionStorage.getItem('scrollPos');
+// 	if (scrollPos) window.scrollTo(0, parseInt(scrollPos));
+// });
 
 // Fly in hero
 document.addEventListener("DOMContentLoaded", () => {
@@ -327,11 +327,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	const hi = document.querySelector(".hero-title .hi");
 	const rest = document.querySelector(".hero-title .rest");
 
-	// Animate "Hi," first
-	animateLetters(hi, 3000, 100); // 1s initial delay, 100ms stagger
-
-	// Animate rest after "Hi," + 0.5s pause
-	const hiDuration = 3000 + 3 * 100; // 1s initial + 3 letters * 100ms
+	animateLetters(hi, 1000, 100);
+	const hiDuration = 1000 + 3 * 100;
 	const pause = 1500;
 	animateLetters(rest, hiDuration + pause, 60);
 });
