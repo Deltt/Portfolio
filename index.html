@@ -50,7 +50,7 @@
 		<!-- hero content -->
 		<div class="relative z-10 text-center">
 			<h2 class="hero-title text-5xl md:text-7xl font-extrabold mb-4 text-white" x-show="completed"
-				style="text-shadow: 0 0 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,1), 0 0 16px rgba(0,0,0,1),0 0 18px rgba(0,0,0,0.8);">
+				style="text-shadow: 0 0 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,1), 0 0 16px rgba(0,0,0,0.5);">
 				<span class="hi">Hi,</span> <span class="rest text-gray-300">I’m Michael</span>
 			</h2>
 			<br>
@@ -85,17 +85,18 @@
 			<button @click="selectedCategory='3d'"
 				:class="selectedCategory==='3d' ? 'bg-[#795b87] text-white' : 'bg-[#332938] text-gray-300'"
 				class="px-4 py-2 rounded">3D</button>
+			<button @click="selectedCategory='2d'"
+				:class="selectedCategory==='2d' ? 'bg-[#795b87] text-white' : 'bg-[#332938] text-gray-300'"
+				class="px-4 py-2 rounded">2D</button>
 			<button @click="selectedCategory='design'"
 				:class="selectedCategory==='design' ? 'bg-[#795b87] text-white' : 'bg-[#332938] text-gray-300'"
 				class="px-4 py-2 rounded">Design</button>
-			<button @click="selectedCategory='misc'"
-				:class="selectedCategory==='misc' ? 'bg-[#795b87] text-white' : 'bg-[#332938] text-gray-300'"
-				class="px-4 py-2 rounded">Misc</button>
 		</div>
 
 		<div id="projects-container" class="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 			<!-- project cards -->
 		</div>
+		<br><br>
 	</section>
 
 	<!-- expanded project -->
