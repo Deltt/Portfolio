@@ -297,16 +297,16 @@ function heroProgress() {
 	}
 }
 
-// // Fixed scroll bar (save)
-// window.addEventListener('beforeunload', () => {
-// 	sessionStorage.setItem('scrollPos', window.scrollY);
-// });
+// Fixed scroll bar (save)
+window.addEventListener('beforeunload', () => {
+	sessionStorage.setItem('scrollPos', window.scrollY);
+});
 
-// // Fixed scroll bar (restore)
-// window.addEventListener('load', () => {
-// 	const scrollPos = sessionStorage.getItem('scrollPos');
-// 	if (scrollPos) window.scrollTo(0, parseInt(scrollPos));
-// });
+// Fixed scroll bar (restore)
+window.addEventListener('load', () => {
+	const scrollPos = sessionStorage.getItem('scrollPos');
+	if (scrollPos) window.scrollTo(0, parseInt(scrollPos));
+});
 
 // Fly in hero
 document.addEventListener("DOMContentLoaded", () => {
