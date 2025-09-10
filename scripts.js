@@ -53,7 +53,7 @@ let lastClickedCard = null;
 
 projects.forEach(project => {
 	const card = document.createElement("div");
-	card.className = "fade-in bg-neutral-900 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:scale-105 transition-transform cursor-pointer";
+	card.className = "fade-in bg-neutral-900 rounded-lg shadow-lg shadow-black/70 p-6 flex flex-col justify-between hover:scale-105 transition-transform cursor-pointer";
 	card.setAttribute("x-show", `selectedCategory==='all' || selectedCategory==='${project.category}'`);
 
 	card.innerHTML = `
@@ -66,7 +66,7 @@ projects.forEach(project => {
 
 	card.addEventListener("click", () => {
 		lastClickedCard = card;
-		expandedCard.className = "bg-neutral-900 rounded-lg shadow-lg p-8 cursor-pointer transition-transform";
+		expandedCard.className = "bg-neutral-900 rounded-lg shadow-lg shadow-black/70 p-8 cursor-pointer transition-transform";
 
 		let additionalContent = "";
 		if (project.content && project.content.length > 0) {
@@ -259,7 +259,13 @@ class Snowflake {
 	}
 }
 
-const snowflakeCount = 30;
+let snowflakeCount;
+if (window.matchMedia("(min-width: 1536px)").matches) {
+  snowflakeCount = 30;
+} else {
+  snowflakeCount = 12;
+}
+
 for (let i = 0; i < snowflakeCount; i++) {
 	particles.push(new Snowflake(i));
 }
