@@ -260,10 +260,10 @@ class Snowflake {
 }
 
 let snowflakeCount;
-if (window.matchMedia("(min-width: 1536px)").matches) {
+if (window.matchMedia("(min-width: 768px)").matches) {
   snowflakeCount = 30;
 } else {
-  snowflakeCount = 12;
+  snowflakeCount = 8;
 }
 
 for (let i = 0; i < snowflakeCount; i++) {
