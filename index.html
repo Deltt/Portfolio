@@ -66,19 +66,21 @@
 		<div class="max-w-5xl mx-auto px-6">
 			<h3 class="fade-in text-4xl font-bold mb-6 text-white">About Me</h3>
 			<p class="fade-in text-lg leading-relaxed text-gray-300">
-				I’m a passionate developer of anything interactive and entertaining. I specialize in design oriented systems programming, 
-				netcode, code optimization, graphics applications and last but definitely not least; videos games.
+				I’m a passionate developer of anything interactive and entertaining. I specialize in design-oriented
+				systems programming,
+				netcode, code optimization, graphics applications and last but definitely not least, videos games.
 			</p>
 			<br>
 			<p class="fade-in text-lg leading-relaxed text-gray-300">
-				More often than not am busy creating games, interactive experiences, 3D software or learning new technologies.
-				Once I am done writing this webpage, I will certainly never touch any HTML, CSS or javascript related file ever again, hurray!
+				More often than not I am busy creating games, 3D software or learning new technologies.
+				Normally, I wouldn’t touch web development with a 10-foot pole, but here we are.
 			</p>
 		</div>
 	</section>
 
 	<!-- projects -->
-	<section id="projects" class="fade-in max-w-6xl mx-auto px-6 py-20" x-data="{ selectedCategory: 'all' }">
+	<section id="projects" class="fade-in max-w-[1408px] [&@media(min-width:2560px)]:max-w-[2048px] mx-auto px-6 py-20"
+		x-data="{ selectedCategory: 'all' }">
 		<h3 class="fade-in text-4xl font-bold mb-10 text-white text-center">My Projects</h3>
 
 		<!-- filter buttons -->
@@ -97,7 +99,8 @@
 				class="px-4 py-2 rounded">Design</button>
 		</div>
 
-		<div id="projects-container" class="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+		<div id="projects-container"
+			class="grid gap-8 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 [@media(min-width:2048px)]:grid-cols-4">
 			<!-- project cards -->
 		</div>
 		<br><br>
@@ -126,8 +129,7 @@
                  current: 0,
              }">
 
-				<div
-					class="relative w-full h-[500px] overflow-hidden rounded-lg shadow-xl shadow-black/70 select-none">
+				<div class="relative w-full h-[500px] overflow-hidden rounded-lg shadow-xl shadow-black/70 select-none">
 					<img :src="`gallery/dungeon${images[current]}.jpg`"
 						class="w-full h-full object-cover transition duration-500" alt="Gallery Image">
 
@@ -172,8 +174,7 @@
                  current: 0,
              }">
 
-				<div
-					class="relative w-full h-[500px] overflow-hidden rounded-lg shadow-lg shadow-black/70 select-none">
+				<div class="relative w-full h-[500px] overflow-hidden rounded-lg shadow-lg shadow-black/70 select-none">
 					<img :src="`gallery/env${images[current]}.jpg`"
 						class="w-full h-full object-cover transition duration-500" alt="Gallery Image">
 
