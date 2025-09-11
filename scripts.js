@@ -278,6 +278,7 @@ class Snowflake {
 		//this.color = "#ffd38e";
 		//this.color = randomColor(); // colors too dark/bland, bad visibility on low contrast screens
 		this.color = randomColorPurple();
+		if (this.id == 0) this.color = "#ffd38e";
 		this.glow = 6;
 		this.isFrozen = false;
 		this.growthProgress = 0;
